@@ -528,7 +528,7 @@
             </div>
         </div>
         <footer>
-            <p>EclipseTV &copy; 2023 — Unblocked, Unstoppable, Unbreakable — 7-7-7-15🔥</p>
+            <p>EclipseTV &copy; 2023 — Shadowed — Revealed — Renewed — 7-7-7-15🔥</p>
             <p>Powered by <a href="VidSRC" style="color: #888;" target="_blank">VidSRC</a></p>
         </footer>
     </div>
@@ -543,6 +543,8 @@
         </div>
     </div>
     <script>
+        let autoScrollOnSearch = false;
+
         // --- Provider selection logic ---
         let currentProvider = localStorage.getItem('phoenix_provider') || 'vidsrc.xyz';
         const providerSelect = document.getElementById('providerSelect');
@@ -681,6 +683,7 @@
             filteredData = [...moviesData];
             displayedCount = 0;
             updateStats();
+            autoScrollOnSearch = false; // Prevent scroll on initial load
             performSearch();
             loadingIndicator.style.display = 'none';
         }
@@ -698,26 +701,35 @@
         }
 
         // Set up event listeners
-        function setupEventListeners() {
-            searchBtn.addEventListener('click', performSearch);
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-            voiceSearchBtn.addEventListener('click', startVoiceSearch);
-            filters.forEach(filter => {
-                filter.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    performSearch();
-                });
-            });
-            closePlayer.addEventListener('click', function() {
-                playerModal.classList.remove('active');
-                playerFrame.src = '';
-                playerStatus.textContent = 'Player closed';
-            });
-            loadMoreBtn.addEventListener('click', loadMoreMovies);
+    function setupEventListeners() {
+    searchBtn.addEventListener('click', function() {
+        autoScrollOnSearch = true;
+        performSearch();
+    });
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            autoScrollOnSearch = true;
+            performSearch();
         }
-
+    });
+    voiceSearchBtn.addEventListener('click', function() {
+        autoScrollOnSearch = true;
+        startVoiceSearch();
+    });
+    filters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            this.classList.toggle('active');
+            autoScrollOnSearch = true;
+            performSearch();
+        });
+    });
+    closePlayer.addEventListener('click', function() {
+        playerModal.classList.remove('active');
+        playerFrame.src = '';
+        playerStatus.textContent = 'Player closed';
+    });
+    loadMoreBtn.addEventListener('click', loadMoreMovies);
+}
         // Perform search
         function performSearch() {
             const query = searchInput.value.trim().toLowerCase();
@@ -734,7 +746,9 @@
             playerStatus.textContent = `Found ${filteredData.length} results`;
           
             // --- Autoscroll to the search results ---
+              if (autoScrollOnSearch) {
             resultsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
         }
 
         // Apply filters to current results
