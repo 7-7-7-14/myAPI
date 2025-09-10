@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* [ ... your existing styles ... ] */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -425,6 +426,36 @@
                 height: 50vh;
             }
         }
+        /* --- Additional style for provider dropdown --- */
+        .provider-container {
+            margin: 18px 0 0 0;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+        .provider-select {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: 1px solid #252525;
+            background: #151515;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        .provider-label {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        .bookmark-btn.bookmarked {
+            color: #ffcb05;
+            border-color: #ffcb05;
+            background: #191705;
+        }
+        .bookmark-btn.bookmarked:hover {
+            color: #fff6c0;
+            border-color: #ffe066;
+        }
     </style>
 </head>
 <body>
@@ -438,7 +469,16 @@
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> Search</button>
                 <button class="voice-btn" id="voiceSearchBtn"><i class="fas fa-microphone"></i> Voice</button>
             </div>
-            
+            <!-- Provider Dropdown -->
+            <div class="provider-container">
+                <label for="providerSelect" class="provider-label"><i class="fas fa-server"></i> Provider:</label>
+                <select id="providerSelect" class="provider-select">
+                    <option value="vidsrc.xyz">vidsrc.xyz</option>
+                    <option value="vidsrc.in">vidsrc.in</option>
+                    <option value="vidsrc.pm">vidsrc.pm</option>
+                    <option value="vidsrc.net">vidsrc.net</option>
+                </select>
+            </div>
             <div class="filters">
                 <div class="filter active" data-type="movie">Movies</div>
                 <div class="filter active" data-type="tv">TV Shows</div>
@@ -454,17 +494,11 @@
         </div>
         
         <div id="errorContainer"></div>
-        
         <div id="resultsInfo" class="results-info"></div>
-        
-        <div class="results-grid" id="resultsGrid">
-            <!-- Will be populated by JavaScript -->
-        </div>
-        
+        <div class="results-grid" id="resultsGrid"></div>
         <div class="load-more-container">
             <button class="load-more-btn" id="loadMoreBtn">Load More</button>
         </div>
-        
         <div class="stats-container">
             <div class="stat-box">
                 <h2>Statistics</h2>
@@ -486,7 +520,7 @@
                 <h2>Player Info</h2>
                 <div class="stat-item">
                     <span>Current Source:</span>
-                    <span>vidsrc.xyz</span>
+                    <span id="providerInfo">vidsrc.xyz</span>
                 </div>
                 <div class="stat-item">
                     <span>Stream Quality:</span>
@@ -498,13 +532,11 @@
                 </div>
             </div>
         </div>
-        
         <footer>
             <p>Phoenix Movies &copy; 2023 — Unblocked, Unstoppable, Unbreakable</p>
             <p>Powered by <a href="https://vidsrc.xyz" style="color: #888;" target="_blank">vidsrc.xyz</a></p>
         </footer>
     </div>
-
     <!-- Player Modal -->
     <div class="player-modal" id="playerModal">
         <div class="player-container">
@@ -515,9 +547,44 @@
             <iframe class="player-iframe" id="playerFrame" allowfullscreen></iframe>
         </div>
     </div>
-
     <script>
-        // Global variables
+        // --- Provider selection logic ---
+        let currentProvider = localStorage.getItem('phoenix_provider') || 'vidsrc.xyz';
+        const providerSelect = document.getElementById('providerSelect');
+        const providerInfo = document.getElementById('providerInfo');
+        providerSelect.value = currentProvider;
+        providerInfo.textContent = currentProvider;
+        providerSelect.addEventListener('change', function() {
+            currentProvider = providerSelect.value;
+            providerInfo.textContent = currentProvider;
+            localStorage.setItem('phoenix_provider', currentProvider);
+        });
+
+        // --- Bookmark logic ---
+        function getBookmarks() {
+            try {
+                return JSON.parse(localStorage.getItem('phoenix_bookmarks') || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+        function saveBookmarks(arr) {
+            localStorage.setItem('phoenix_bookmarks', JSON.stringify(arr));
+        }
+        function isBookmarked(imdbId) {
+            return getBookmarks().includes(imdbId);
+        }
+        function toggleBookmark(imdbId) {
+            let bookmarks = getBookmarks();
+            if (bookmarks.includes(imdbId)) {
+                bookmarks = bookmarks.filter(id => id !== imdbId);
+            } else {
+                bookmarks.push(imdbId);
+            }
+            saveBookmarks(bookmarks);
+        }
+
+        // --- Rest of your existing variables ---
         let moviesData = [];
         let filteredData = [];
         let displayedCount = 0;
@@ -589,48 +656,38 @@
             try {
                 playerStatus.textContent = 'Loading database...';
                 loadingIndicator.style.display = 'block';
-                
-                // Try to fetch from the external URLs
                 const [moviesResponse, tvResponse] = await Promise.all([
                     fetch('https://7-7-7-10.github.io/MoviePlayer/Movies.json'),
                     fetch('https://7-7-7-10.github.io/MoviePlayer/TV.json')
                 ]);
-                
                 let movies = [];
                 let tvShows = [];
-                
                 if (moviesResponse.ok) {
                     movies = await moviesResponse.json();
                 } else {
                     throw new Error(`Movies HTTP error! status: ${moviesResponse.status}`);
                 }
-                
                 if (tvResponse.ok) {
                     tvShows = await tvResponse.json();
                 } else {
                     throw new Error(`TV HTTP error! status: ${tvResponse.status}`);
                 }
-                
-                // Transform data to match our format
                 moviesData = [
                     ...movies.map(item => ({ ...item, type: "movie" })),
                     ...tvShows.map(item => ({ ...item, type: "tv" }))
                 ];
-                
                 playerStatus.textContent = 'Database loaded successfully';
             } catch (error) {
                 console.error('Error loading movies from external source:', error);
-                
-                // Show error message but continue with sample data
                 showError('Could not load external database. Using sample data instead.', false);
                 moviesData = sampleMovies;
                 playerStatus.textContent = 'Using sample data';
             }
-            
             filteredData = [...moviesData];
             displayedCount = 0;
             updateStats();
-            performSearch(); // Initial display with search (empty query shows all)
+           autoScrollOnSearch = false;
+            performSearch();
             loadingIndicator.style.display = 'none';
         }
 
@@ -647,64 +704,62 @@
         }
 
         // Set up event listeners
-        function setupEventListeners() {
-            // Search functionality
-            searchBtn.addEventListener('click', performSearch);
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-
-            // Voice search
-            voiceSearchBtn.addEventListener('click', startVoiceSearch);
-
-            // Filters
-            filters.forEach(filter => {
-                filter.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    performSearch(); // Re-run search when filters change
-                });
-            });
-
-            // Player controls
-            closePlayer.addEventListener('click', function() {
-                playerModal.classList.remove('active');
-                playerFrame.src = '';
-                playerStatus.textContent = 'Player closed';
-            });
-
-            // Load more button
-            loadMoreBtn.addEventListener('click', loadMoreMovies);
+       function setupEventListeners() {
+    searchBtn.addEventListener('click', function() {
+        autoScrollOnSearch = true;
+        performSearch();
+    });
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            autoScrollOnSearch = true;
+            performSearch();
         }
+    });
+    voiceSearchBtn.addEventListener('click', function() {
+        autoScrollOnSearch = true;
+        startVoiceSearch();
+    });
+    filters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            this.classList.toggle('active');
+            autoScrollOnSearch = true;
+            performSearch();
+        });
+    });
+    closePlayer.addEventListener('click', function() {
+        playerModal.classList.remove('active');
+        playerFrame.src = '';
+        playerStatus.textContent = 'Player closed';
+    });
+    loadMoreBtn.addEventListener('click', loadMoreMovies);
+}
+
 
         // Perform search
         function performSearch() {
             const query = searchInput.value.trim().toLowerCase();
-            displayedCount = 0; // Reset displayed count for new search
-            
+            displayedCount = 0;
             if (query === '') {
                 filteredData = [...moviesData];
             } else {
-                // Simple search implementation that actually works
                 filteredData = moviesData.filter(movie => 
                     movie.title.toLowerCase().includes(query)
                 );
             }
-            
-            // Apply active filters
             applyFilters();
-            
-            // Display first batch of results
             displayMovies();
-            
             playerStatus.textContent = `Found ${filteredData.length} results`;
+          
+            // --- Autoscroll to the search results ---
+          if (autoScrollOnSearch) {
+       slowScrollTo(resultsGrid, 1200); // 1200ms for slower scroll, adjust as needed
+    }
         }
 
         // Apply filters to current results
         function applyFilters() {
             const activeTypeFilters = [];
             const activeGenreFilters = [];
-
-            // Get active filters
             document.querySelectorAll('.filter.active').forEach(filter => {
                 if (filter.dataset.type) {
                     activeTypeFilters.push(filter.dataset.type);
@@ -712,18 +767,12 @@
                     activeGenreFilters.push(filter.dataset.genre);
                 }
             });
-
-            // If no type filters are active, show both movies and TV shows
             if (activeTypeFilters.length === 0) {
                 activeTypeFilters.push('movie', 'tv');
             }
-
-            // Apply type filters
             filteredData = filteredData.filter(movie => 
                 activeTypeFilters.includes(movie.type)
             );
-
-            // Apply genre filters (simplified for demo)
             if (activeGenreFilters.length > 0) {
                 filteredData = filteredData.filter(movie => 
                     activeGenreFilters.some(genre => 
@@ -748,11 +797,8 @@
                 resultsInfo.textContent = '';
                 return;
             }
-
-            // Determine how many movies to show
             const moviesToShow = Math.min(displayedCount + MOVIES_PER_PAGE, filteredData.length);
             const moviesToDisplay = filteredData.slice(0, moviesToShow);
-            
             resultsGrid.innerHTML = moviesToDisplay.map(movie => `
                 <div class="movie-card" data-id="${movie.imdb}">
                     <div class="movie-poster">
@@ -765,27 +811,29 @@
                             <button class="play-btn" onclick="playMovie('${movie.imdb}', '${movie.type}')">
                                 <i class="fas fa-play"></i> Play
                             </button>
-                            <button class="bookmark-btn">
+                            <button class="bookmark-btn${isBookmarked(movie.imdb) ? ' bookmarked' : ''}" data-imdb="${movie.imdb}">
                                 <i class="fas fa-bookmark"></i> Save
                             </button>
                         </div>
                     </div>
                 </div>
             `).join('');
-            
-            // Update displayed count
             displayedCount = moviesToShow;
-            
-            // Update results info
             resultsInfo.textContent = `Showing ${displayedCount} of ${filteredData.length} results`;
-            
-            // Show or hide load more button
             if (displayedCount < filteredData.length) {
                 loadMoreBtn.style.display = 'block';
                 loadMoreBtn.disabled = false;
             } else {
                 loadMoreBtn.style.display = 'none';
             }
+            // Attach event listeners for bookmark buttons
+            resultsGrid.querySelectorAll('.bookmark-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const imdbId = this.getAttribute('data-imdb');
+                    toggleBookmark(imdbId);
+                    this.classList.toggle('bookmarked', isBookmarked(imdbId));
+                });
+            });
         }
 
         // Load more movies
@@ -796,22 +844,16 @@
         // Play a movie
         function playMovie(imdbId, type) {
             playerStatus.textContent = 'Loading player...';
-            
-            // Construct the vidsrc URL based on the movie type
-            const baseUrl = 'https://vidsrc.xyz/embed';
+            const baseUrl = `https://${currentProvider}/embed`;
             const url = type === 'movie' 
                 ? `${baseUrl}/movie/${imdbId}`
                 : `${baseUrl}/tv/${imdbId}`;
-            
             playerFrame.src = url;
             playerModal.classList.add('active');
-            
-            // Find the movie title
             const movie = moviesData.find(m => m.imdb === imdbId);
             if (movie) {
                 playerTitle.textContent = movie.title;
             }
-            
             playerStatus.textContent = 'Playing';
         }
 
@@ -821,17 +863,13 @@
                 alert('Voice search is not supported in your browser');
                 return;
             }
-            
             voiceSearchBtn.classList.add('listening');
             voiceSearchBtn.innerHTML = '<i class="fas fa-microphone-slash"></i> Listening...';
-            
             const recognition = new webkitSpeechRecognition();
             recognition.continuous = false;
             recognition.interimResults = false;
             recognition.lang = 'en-US';
-            
             recognition.start();
-            
             recognition.onresult = function(event) {
                 const transcript = event.results[0][0].transcript;
                 searchInput.value = transcript;
@@ -839,12 +877,10 @@
                 voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i> Voice';
                 performSearch();
             };
-            
             recognition.onerror = function() {
                 voiceSearchBtn.classList.remove('listening');
                 voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i> Voice';
             };
-            
             recognition.onend = function() {
                 voiceSearchBtn.classList.remove('listening');
                 voiceSearchBtn.innerHTML = '<i class="fas fa-microphone"></i> Voice';
@@ -854,12 +890,33 @@
         // Update statistics
         function updateStats() {
             const movieCount = moviesData.filter(m => m.type === 'movie').length;
-            const tvCount = moviesData.filter(m => m.type === 'tv').length;
-            
+            const tvCountVal = moviesData.filter(m => m.type === 'tv').length;
             moviesCount.textContent = movieCount;
-            tvCount.textContent = tvCount;
+            tvCount.textContent = tvCountVal;
             totalCount.textContent = moviesData.length;
         }
+        // Expose playMovie globally for inline event handler
+        window.playMovie = playMovie;
+        function slowScrollTo(element, duration = 1200) { // duration in ms
+    const rect = element.getBoundingClientRect();
+    const targetY = rect.top + window.pageYOffset;
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function step(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        // Ease function (easeInOutCubic)
+        const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+        const progress = Math.min(timeElapsed / duration, 1);
+        window.scrollTo(0, startY + distance * ease(progress));
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        }
+    }
+    requestAnimationFrame(step);
+}
     </script>
 </body>
 </html>
