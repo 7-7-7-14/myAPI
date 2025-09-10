@@ -747,7 +747,7 @@
           
             // --- Autoscroll to the search results ---
               if (autoScrollOnSearch) {
-            resultsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+           slowScrollTo(resultsGrid, 1200); // 1200ms for slower scroll, adjust as needed
               }
         }
 
@@ -892,6 +892,26 @@
         }
         // Expose playMovie globally for inline event handler
         window.playMovie = playMovie;
+        function slowScrollTo(element, duration = 1200) { // duration in ms
+    const rect = element.getBoundingClientRect();
+    const targetY = rect.top + window.pageYOffset;
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function step(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        // Ease function (easeInOutCubic)
+        const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+        const progress = Math.min(timeElapsed / duration, 1);
+        window.scrollTo(0, startY + distance * ease(progress));
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        }
+    }
+    requestAnimationFrame(step);
+}
     </script>
 </body>
 </html>
