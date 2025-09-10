@@ -457,6 +457,29 @@
             color: #fff6c0;
             border-color: #ffe066;
         }
+        
+        /* Download button styles */
+        .download-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: transparent;
+            color: #666;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .download-btn:hover {
+            color: #e0e0e0;
+            border-color: #444;
+            background: #1a1a1a;
+        }
     </style>
 </head>
 <body>
@@ -531,6 +554,9 @@
             <!--Cooking 🔥🔥🔥-->
             <p>EclipseTV &copy; 2023 — Shadowed — Revealed — Renewed — 7-7-7-15</p> 
             <p>Powered by <a href="VidSRC" style="color: #888;" target="_blank">VidSRC</a></p>
+            <button class="download-btn" id="downloadBtn">
+                <i class="fas fa-download"></i> Download as Chronos File
+            </button>
         </footer>
     </div>
     <!-- Player Modal -->
@@ -606,6 +632,7 @@
         const playerStatus = document.getElementById('playerStatus');
         const loadMoreBtn = document.getElementById('loadMoreBtn');
         const resultsInfo = document.getElementById('resultsInfo');
+        const downloadBtn = document.getElementById('downloadBtn');
 
         // Sample movie data as fallback
         const sampleMovies = [
@@ -730,6 +757,7 @@
         playerStatus.textContent = 'Player closed';
     });
     loadMoreBtn.addEventListener('click', loadMoreMovies);
+    downloadBtn.addEventListener('click', downloadAsChronosFile);
 }
         // Perform search
         function performSearch() {
@@ -891,6 +919,34 @@
             tvCount.textContent = tvCountVal;
             totalCount.textContent = moviesData.length;
         }
+        
+        // Download as Chronos file
+        function downloadAsChronosFile() {
+            // Get the current HTML content
+            const htmlContent = document.documentElement.outerHTML;
+            
+            // Create a Blob with the content
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            
+            // Create a download link
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'EclipseTV.chronos.html';
+            
+            // Trigger the download
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(a.href);
+            }, 100);
+            
+            // Update status
+            playerStatus.textContent = 'Downloaded as Chronos file';
+        }
+        
         // Expose playMovie globally for inline event handler
         window.playMovie = playMovie;
         function slowScrollTo(element, duration = 1200) { // duration in ms
