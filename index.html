@@ -546,7 +546,7 @@
         let autoScrollOnSearch = false;
 
         // --- Provider selection logic ---
-        let currentProvider = localStorage.getItem('phoenix_provider') || 'vidsrc.xyz';
+        let currentProvider = localStorage.getItem('phoenix_provider') || '.xyz';
         const providerSelect = document.getElementById('providerSelect');
         const providerInfo = document.getElementById('providerInfo');
         providerSelect.value = currentProvider;
@@ -585,7 +585,7 @@
         let moviesData = [];
         let filteredData = [];
         let displayedCount = 0;
-        const MOVIES_PER_PAGE = 40;
+        const MOVIES_PER_PAGE = 42;
 
         // DOM Elements
         const searchInput = document.getElementById('searchQuery');
