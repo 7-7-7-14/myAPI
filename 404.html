@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | Eclipse</title>
+    <link rel="icon" type="image/x-icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fas2.ftcdn.net%2Fv2%2Fjpg%2F02%2F78%2F71%2F73%2F1000_F_278717315_KtaKn0mC0lQ16j20iheyMMrPBOWOQKCa.jpg&f=1&nofb=1&ipt=d58cc732db7d8237eac62dc1c8f4d4fdd6d0fc40d2e5ca2bce4997e2adeec6ab" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            text-align: center;
+            background-color: #111111;
+            border-radius: 12px;
+            border: 1px solid #252525;
+        }
+        
+        .error-code {
+            font-size: 8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #888, #e0e0e0, #888);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(224, 224, 224, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .error-message {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        #searchQuery {
+            flex: 1;
+            min-width: 300px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #111;
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        
+        #searchQuery:focus {
+            outline: none;
+            border-color: #444;
+            background: #151515;
+        }
+        
+        .search-btn {
+            padding: 16px 28px;
+            border-radius: 10px;
+            border: none;
+            background: #333;
+            color: #e0e0e0;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-btn:hover {
+            background: #444;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            border: none;
+            background: #222;
+            color: #e0e0e0;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .action-btn:hover {
+            background: #2a2a2a;
+        }
+        
+        .home-btn {
+            background: #333;
+        }
+        
+        .home-btn:hover {
+            background: #444;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px 20px;
+            color: #666;
+            border-top: 1px solid #252525;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 6rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            #searchQuery {
+                min-width: unset;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Shadowed Path, Unrevealed Content</h1>
+        <p class="error-message">The page you're looking for has been obscured or doesn't exist. Perhaps it's been shadowed by the eclipse.</p>
+        
+        <div class="search-container">
+            <input type="text" id="searchQuery" placeholder="Search for movies or TV shows...">
+            <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> Search</button>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="https://7-7-7-14.github.io/myAPI/" class="action-btn home-btn"><i class="fas fa-home"></i> Return Home</a>
+            <a href="javascript:history.back()" class="action-btn"><i class="fas fa-arrow-left"></i> Go Back</a>
+        </div>
+        
+        <footer>
+            <p>EclipseTV &copy; 2023 — Shadowed — Revealed — Renewed — 7-7-7-15</p> 
+            <p>Powered by <a href="#" style="color: #888;">VidSRC</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Handle search functionality
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (query) {
+                // Redirect to main site with search query
+                window.location.href = `/?search=${encodeURIComponent(query)}`;
+            }
+        });
+        
+        document.getElementById('searchQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    window.location.href = `/?search=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
