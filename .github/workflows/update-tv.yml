@@ -1,0 +1,31 @@
+name: Update TV.json from embed.su
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # every day at 6:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-tv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download latest tv.json
+        run: curl -L https://embed.su/list/tv.json -o TV.json
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add TV.json
+          git diff --cached --quiet || git commit -m "Auto-update TV.json from embed.su"
+          git pull --rebase origin main
+          git push origin HEAD:main
