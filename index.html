@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoenix Movies | Minimal</title>
+    <title>EclipseTV</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -461,8 +461,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>Phoenix</h1>
-            <div class="tagline">Unblocked — Unstoppable — Unbreakable</div>
+            <h1>EclipseTV</h1>
+            <div class="tagline">Shadowed — Revealed — Renewed</div>
             
             <div class="search-container">
                 <input type="text" id="searchQuery" placeholder="Search by title...">
@@ -520,7 +520,7 @@
                 <h2>Player Info</h2>
                 <div class="stat-item">
                     <span>Current Source:</span>
-                    <span id="providerInfo">vidsrc.xyz</span>
+                    <span id="providerInfo">7-7-7-15|vidSRC</span>
                 </div>
                 <div class="stat-item">
                     <span>Stream Quality:</span>
@@ -686,7 +686,6 @@
             filteredData = [...moviesData];
             displayedCount = 0;
             updateStats();
-           autoScrollOnSearch = false;
             performSearch();
             loadingIndicator.style.display = 'none';
         }
@@ -704,36 +703,25 @@
         }
 
         // Set up event listeners
-       function setupEventListeners() {
-    searchBtn.addEventListener('click', function() {
-        autoScrollOnSearch = true;
-        performSearch();
-    });
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            autoScrollOnSearch = true;
-            performSearch();
+        function setupEventListeners() {
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+            voiceSearchBtn.addEventListener('click', startVoiceSearch);
+            filters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    performSearch();
+                });
+            });
+            closePlayer.addEventListener('click', function() {
+                playerModal.classList.remove('active');
+                playerFrame.src = '';
+                playerStatus.textContent = 'Player closed';
+            });
+            loadMoreBtn.addEventListener('click', loadMoreMovies);
         }
-    });
-    voiceSearchBtn.addEventListener('click', function() {
-        autoScrollOnSearch = true;
-        startVoiceSearch();
-    });
-    filters.forEach(filter => {
-        filter.addEventListener('click', function() {
-            this.classList.toggle('active');
-            autoScrollOnSearch = true;
-            performSearch();
-        });
-    });
-    closePlayer.addEventListener('click', function() {
-        playerModal.classList.remove('active');
-        playerFrame.src = '';
-        playerStatus.textContent = 'Player closed';
-    });
-    loadMoreBtn.addEventListener('click', loadMoreMovies);
-}
-
 
         // Perform search
         function performSearch() {
@@ -751,9 +739,7 @@
             playerStatus.textContent = `Found ${filteredData.length} results`;
           
             // --- Autoscroll to the search results ---
-          if (autoScrollOnSearch) {
-       slowScrollTo(resultsGrid, 1200); // 1200ms for slower scroll, adjust as needed
-    }
+            resultsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // Apply filters to current results
@@ -897,26 +883,6 @@
         }
         // Expose playMovie globally for inline event handler
         window.playMovie = playMovie;
-        function slowScrollTo(element, duration = 1200) { // duration in ms
-    const rect = element.getBoundingClientRect();
-    const targetY = rect.top + window.pageYOffset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function step(currentTime) {
-        if (!startTime) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        // Ease function (easeInOutCubic)
-        const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
-        const progress = Math.min(timeElapsed / duration, 1);
-        window.scrollTo(0, startY + distance * ease(progress));
-        if (progress < 1) {
-            requestAnimationFrame(step);
-        }
-    }
-    requestAnimationFrame(step);
-}
     </script>
 </body>
 </html>
