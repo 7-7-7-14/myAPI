@@ -515,7 +515,7 @@
                 <h2>Player Info</h2>
                 <div class="stat-item">
                     <span>Current Source:</span>
-                    <span id="providerInfo">7-7-7-15|vidSRC</span>
+                    <span id="providerInfo">VidSrc</span>
                 </div>
                 <div class="stat-item">
                     <span>Stream Quality:</span>
@@ -528,7 +528,8 @@
             </div>
         </div>
         <footer>
-            <p>EclipseTV &copy; 2023 — Shadowed — Revealed — Renewed — 7-7-7-15🔥</p>
+            <!--Cooking 🔥🔥🔥-->
+            <p>EclipseTV &copy; 2023 — Shadowed — Revealed — Renewed — 7-7-7-15</p> 
             <p>Powered by <a href="VidSRC" style="color: #888;" target="_blank">VidSRC</a></p>
         </footer>
     </div>
@@ -546,27 +547,27 @@
         let autoScrollOnSearch = false;
 
         // --- Provider selection logic ---
-        let currentProvider = localStorage.getItem('phoenix_provider') || '.xyz';
+        let currentProvider = localStorage.getItem('eclipse_provider') || '.xyz';
         const providerSelect = document.getElementById('providerSelect');
         const providerInfo = document.getElementById('providerInfo');
         providerSelect.value = currentProvider;
-        providerInfo.textContent = currentProvider;
+        //providerInfo.textContent = currentProvider; HAHA REMOVE THIS SO THEY CANT STEAL THE PROVIDER😏
         providerSelect.addEventListener('change', function() {
             currentProvider = providerSelect.value;
             providerInfo.textContent = currentProvider;
-            localStorage.setItem('phoenix_provider', currentProvider);
+            localStorage.setItem('eclipse_provider', currentProvider);
         });
 
         // --- Bookmark logic ---
         function getBookmarks() {
             try {
-                return JSON.parse(localStorage.getItem('phoenix_bookmarks') || '[]');
+                return JSON.parse(localStorage.getItem('eclipse_bookmarks') || '[]');
             } catch (e) {
                 return [];
             }
         }
         function saveBookmarks(arr) {
-            localStorage.setItem('phoenix_bookmarks', JSON.stringify(arr));
+            localStorage.setItem('eclipse_bookmarks', JSON.stringify(arr));
         }
         function isBookmarked(imdbId) {
             return getBookmarks().includes(imdbId);
