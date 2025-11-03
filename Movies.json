@@ -94,7 +94,7 @@ iframe {
 </head>
 
 <body>
-    <script async src="https://euob.youstarsbuilding.com/sxp/i/224f85302aa2b6ec30aac9a85da2cbf9.js" data-ch="AdsDeli - domain - landingpage" data-uvid="725325d5535620df3f72776a677a1ac33c16ef33" class="ct_clicktrue_80705" data-jsonp="onCheqResponse"></script>
+    <script async src="https://euob.youstarsbuilding.com/sxp/i/224f85302aa2b6ec30aac9a85da2cbf9.js" data-ch="AdsDeli - domain - landingpage" data-uvid="4d3f648d986b6a0482a7be7c88289120c0a1b734" class="ct_clicktrue_80705" data-jsonp="onCheqResponse"></script>
     <noscript>
         <iframe src="https://obseu.youstarsbuilding.com/ns/224f85302aa2b6ec30aac9a85da2cbf9.html?ch=AdsDeli%20-%20domain%20-%20landingpage" width="0" height="0" style="display:none"></iframe>
     </noscript>
@@ -109,43 +109,27 @@ iframe {
         Array.from(document.getElementsByTagName('iframe')).forEach((iframe) => iframe.remove());
     };
 </script>
-<script type='text/javascript'>
-fetch('/chronos?dune=eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.Y-ZFADCEjXaWNCoSuxbIG17Hla30nyDdCZspT9hFrFA0sF2xgCHqdQ.GCBEpczfqW4-F0copc4X4w.tjkLNAbVJSgGvI60f5qVxCAEVsDBSkAlng6bCsIlDFDXmav1DDKXwg_dANRAC_GuRfYfPZABGh2CULJ0TF6pGIEo56tCWMTrgebWUL8vF5GbewythEAN9wMUnGF26Qqs6m-aTvJycXmR19VC8FARldaXLZSMwkQypc8Phr0oMYDYT_1iplpgjS-t42wf4qyHTg9d9wHnQdvCcf99MnuoIK4Rvlvqcy2F-0YxevpaXM2-_GRR9z3cyPyD4wZuyhQajYTSaESPAFHYAfhZ270d2w.RxafWdWOx5U7Zm9q6FEMLw&t=6906e7f8&token=725325d5535620df3f72776a677a1ac33c16ef33')
-    .then(async response => {
-        if (!response.ok && response.status >= 400) {
-            throw new Error('Network response was not ok: ' + response.statusText);
-        }
-        if (response.status === 204) {
-            window.chronosFailed();
-            return null;
-        }
-        return JSON.parse(await response.text());
-    })
-    .then(data => {
-        if (data && data.location) {
-            window.location.href = data.location;
-        } else if (data && data.res && data.res.length > 0) {
-            var html = '';
-            Object.keys(locations).forEach(function (keyword) {
-                var href = locations[keyword];
-                html += `<a href="${href}" class="fallback-term-link"><span>${keyword}</span></a>`;
-            });
-            
-            document.getElementById('fallbackTerms').innerHTML = html;
-            document.getElementById('keywords-template').style.display = 'block';
-            
-            if (typeof window.chronosSuccess === 'function') {
-                window.chronosSuccess(data);
+<script type="text/javascript">
+var ls = function(xhr, token) {
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status >= 200 && xhr.status <= 400) {
+                if (xhr.responseText.trim() === '') {
+                    return;
+                }
+    
+                console.log(JSON.parse(xhr.responseText))
+            } else {
+                console.log('There was a problem with the request.');
             }
-        } else {
-            window.chronosFailed();
-            console.log(data);
         }
-    })
-    .catch(error => {
-        console.error(error);
-        window.chronosFailed();
-    });
+    }
+    
+    xhr.open('GET', '/munin/a/l' + 's?t=690839d9&token=' + encodeURI(token), true);
+    xhr.send();
+};
+ls(new XMLHttpRequest(), '4d3f648d986b6a0482a7be7c88289120c0a1b734');
+if (typeof window.chronosFailed === 'function') { window.chronosFailed(); }
 </script>
 
 <div>
@@ -153,7 +137,7 @@ fetch('/chronos?dune=eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.Y-ZFADC
     </div>
 
 <div id="content">
-    <iframe id="iframe" frameBorder="0" src="https://yfdnzfa.com/?dn=seloykol.ru&pid=9PO755G95"></iframe>
+    <iframe id="iframe" frameBorder="0" src="https://yfdpco3.com/sk-park.php?pid=9PO15V947&dn=seloykol.ru&ua=curl%2F8.5.0&requrl=http%3A%2F%2Fseloykol.ru%2F"></iframe>
     </div>
 <script>
     (function () {
