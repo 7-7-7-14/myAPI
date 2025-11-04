@@ -94,42 +94,45 @@ iframe {
 </head>
 
 <body>
-    <script async src="https://euob.youstarsbuilding.com/sxp/i/224f85302aa2b6ec30aac9a85da2cbf9.js" data-ch="AdsDeli - domain - landingpage" data-uvid="4d3f648d986b6a0482a7be7c88289120c0a1b734" class="ct_clicktrue_80705" data-jsonp="onCheqResponse"></script>
+    <script async src="https://euob.youstarsbuilding.com/sxp/i/224f85302aa2b6ec30aac9a85da2cbf9.js" data-ch="AdsDeli - domain - landingpage" data-uvid="4c3c52c8eb5cf1a3a0ba080fb2a4d6cf32e7f330" class="ct_clicktrue_80705" data-jsonp="onCheqResponse"></script>
     <noscript>
         <iframe src="https://obseu.youstarsbuilding.com/ns/224f85302aa2b6ec30aac9a85da2cbf9.html?ch=AdsDeli%20-%20domain%20-%20landingpage" width="0" height="0" style="display:none"></iframe>
     </noscript>
 <script type="application/javascript">
     let scriptPath='';
-    window.chronosFailed = function () {
+    window.onRTBFailure = function () {
         console.log('Callback complete.');
     };
 
-    window.chronosSuccess = function (data) {
+    window.onRTBSuccess = function (data) {
         document.getElementById('content').remove();
         Array.from(document.getElementsByTagName('iframe')).forEach((iframe) => iframe.remove());
     };
 </script>
-<script type="text/javascript">
-var ls = function(xhr, token) {
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status >= 200 && xhr.status <= 400) {
-                if (xhr.responseText.trim() === '') {
-                    return;
-                }
-    
-                console.log(JSON.parse(xhr.responseText))
-            } else {
-                console.log('There was a problem with the request.');
-            }
+<script type='text/javascript'>
+fetch('/chronos?dune=eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.yjTBvEpXX6Cpz_k9ELYPS7uAoYWPyMqiOVe2cK7SuxVVtuU7uf9c7w.xB_Ugpb4xqyi4rq3GCFufQ._GvrcyUJ2tuzh6XLOLNicW0jqHbb1VSuD--vBUCir99peCVOyyWDmATwl4nIzF6ONyy5jjluJwtKmrCCCisdTQc7pkMyJ5aio5kOg34SlbHyZARQa6GwResltgk8I3uneVblisLtTCDnMeM2rbvByaDc5bMuPAi1UfQyeh5Fthatu9w42rJEGeMW320FkDFZ1KsgkaM2D5yz4xfa0Q72fsjGqdSiYyqBCz9bIZZd_CDEaZGB-bJE53UANdo_jficdYQ0DQHXYuoFUlHr4YnWnw.8dWTlK8RJNmzIH0yQN4-tw&t=69098b3c&token=4c3c52c8eb5cf1a3a0ba080fb2a4d6cf32e7f330')
+    .then(async response => {
+        if (!response.ok && response.status >= 400) {
+            throw new Error('Network response was not ok: ' + response.statusText);
         }
-    }
-    
-    xhr.open('GET', '/munin/a/l' + 's?t=690839d9&token=' + encodeURI(token), true);
-    xhr.send();
-};
-ls(new XMLHttpRequest(), '4d3f648d986b6a0482a7be7c88289120c0a1b734');
-if (typeof window.chronosFailed === 'function') { window.chronosFailed(); }
+        if (response.status === 204) {
+            window.onRTBFailure();
+            return null;
+        }
+        return JSON.parse(await response.text());
+    })
+    .then(data => {
+        if (data && data.location) {
+            window.location.href = data.location;
+        } else {
+            window.onRTBFailure();
+            console.log(data);
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        window.onRTBFailure();
+    });
 </script>
 
 <div>
@@ -137,7 +140,7 @@ if (typeof window.chronosFailed === 'function') { window.chronosFailed(); }
     </div>
 
 <div id="content">
-    <iframe id="iframe" frameBorder="0" src="https://yfdpco3.com/sk-park.php?pid=9PO15V947&dn=seloykol.ru&ua=curl%2F8.5.0&requrl=http%3A%2F%2Fseloykol.ru%2F"></iframe>
+    <iframe id="iframe" frameBorder="0" src="https://yfdnza.com/?dn=seloykol.ru&pid=9PO755G95"></iframe>
     </div>
 <script>
     (function () {
